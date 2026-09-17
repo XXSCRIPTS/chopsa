@@ -28,7 +28,7 @@
             overflow: hidden;
         }
 
-        /* Tuff Premium Header */
+        /* Header Layout */
         header {
             background: linear-gradient(135deg, #14181f 0%, #0d0f12 100%);
             padding: 18px 24px;
@@ -37,6 +37,7 @@
             align-items: center;
             border-bottom: 2px solid var(--border-color);
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            user-select: none;
         }
 
         .profile-area {
@@ -97,7 +98,7 @@
             box-shadow: 0 0 8px #10b981;
         }
 
-        /* Chat Workspace */
+        /* Chat Log Window */
         #chat-container {
             flex: 1;
             overflow-y: auto;
@@ -114,11 +115,11 @@
             gap: 14px;
             max-width: 80%;
             align-items: flex-start;
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.25s ease-out forwards;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -170,13 +171,14 @@
             object-fit: cover;
         }
 
-        /* Tuff Preset Actions */
+        /* Action Panel Chips */
         .quick-actions {
             display: flex;
             gap: 10px;
             padding: 0 24px;
             margin-bottom: 12px;
             overflow-x: auto;
+            user-select: none;
         }
 
         .action-chip {
@@ -198,7 +200,7 @@
             background-color: rgba(0, 176, 80, 0.05);
         }
 
-        /* Control Dock */
+        /* Control Base Dock */
         #input-container {
             background-color: var(--chat-bg);
             padding: 20px 24px;
@@ -224,7 +226,7 @@
             border-color: var(--accent-green);
         }
 
-        button {
+        #send-btn {
             background: linear-gradient(135deg, #00b050 0%, #00803a 100%);
             color: #ffffff;
             border: none;
@@ -236,23 +238,26 @@
             letter-spacing: 0.5px;
             font-size: 0.9rem;
             box-shadow: 0 4px 15px rgba(0, 176, 80, 0.3);
-            transition: all 0.2s;
+            transition: all 0.15s ease;
         }
 
-        button:hover {
+        #send-btn:hover {
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(0, 176, 80, 0.4);
         }
 
-        button:disabled {
-            background: #242b35;
-            color: var(--text-muted);
-            box-shadow: none;
-            cursor: not-allowed;
-            transform: none;
+        #send-btn:active {
+            transform: translateY(1px);
         }
 
-        /* Custom Scrollbar */
+        #send-btn:disabled {
+            background: #242b35 !important;
+            color: var(--text-muted) !important;
+            box-shadow: none !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -270,7 +275,21 @@
     <header>
         <div class="profile-area">
             <div class="avatar">
-                <!-- Direct CDN link of your provided profile photo image asset -->
+                <img src="https://githubusercontent.com" alt="Muhammad Ramzan Chhipa">
+            </div>
+            <div class="profile-info">
+                <h1>Chipa Sahib AI</h1>
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    Welfare Desk Live
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="chat-container">
+        <div class="message-wrapper bot-wrapper">
+            <div class="msg-avatar">
                 <img src="https://githubusercontent.com" alt="Muhammad Ramzan Chhipa">
             </div>
             <div class="profile-info">
@@ -292,19 +311,19 @@
         </div>
     </div>
 
-    <!-- Quick Entry Action Row -->
     <div class="quick-actions">
-        <div class="action-chip" onclick="clickAction('Give me some life advice, Chipa Sahib.')">👴 Life Advice</div>
-        <div class="action-chip" onclick="clickAction('Chipa Sahib, I need a special blessing for my work today.')">🤲 Special Blessing</div>
-        <div class="action-chip" onclick="clickAction('How can I stay motivated to serve humanity?')">🌍 Welfare & Duty</div>
+        <div class="action-chip" id="action-advice">👴 Life Advice</div>
+        <div class="action-chip" id="action-blessing">🤲 Special Blessing</div>
+        <div class="action-chip" id="action-welfare">🌍 Welfare & Duty</div>
     </div>
 
     <div id="input-container">
         <input type="text" id="user-input" placeholder="Speak your mind, Beta..." autocomplete="off">
-        <button id="send-btn" onclick="sendMessage()">Send</button>
+        <button id="send-btn">Send</button>
     </div>
 
     <script>
+        // High-reliability DOM Registry Hook
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
@@ -312,16 +331,17 @@
 
         const apiKey = "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";
 
-        userInput.addEventListener('keypress', function(e) {
+        // Bind core trigger functions natively to eliminate onclick inline loss
+        sendBtn.addEventListener('click', () => {
+            sendMessage();
+        });
+
+        userInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
+                e.preventDefault();
                 sendMessage();
             }
         });
 
-        // Fixed Button Callback Function Hook
-        function clickAction(text) {
-            userInput.value = text;
-            sendMessage();
-        }
-
-        async function sendMessage() {
+        // Event hooks for Action Chips
+Use code with caution.document.getElementById('action-advice').addEventListener('click', () => triggerPreset('Give me some life advice, Chipa Sahib.'));document.getElementById('action-blessing').addEventListener('click', () => triggerPreset('Chipa Sahib, I need a special blessing for my work today.'));document.getElementById('action-welfare').addEventListener('click', () => triggerPreset('How can I stay motivated to serve humanity?'));function triggerPreset(text) {userInput.value = text;sendMessage();}async function sendMessage() {const messageText = userInput.value.trim();if (!messageText) return;// Commit user prompt immediately to UI layoutappendUserMessage(messageText);userInput.value = '';// Apply defensive focus blockuserInput.disabled = true;sendBtn.disabled = true;const botElements = appendBotPlaceholder();try {const response = await fetch('openai.com', {method: 'POST',headers: {'Content-Type': 'application/json','Authorization': Bearer ${apiKey}},body: JSON.stringify({model: "gpt-4o-mini",messages: [{role: "system",content: "You are Chipa Sahib AI, a powerhouse elder assistant inspired directly by Muhammad Ramzan Chhipa—the iconic Pakistani humanitarian and elder figure. You speak with deep experience, ultimate sincerity, and grandfatherly warmth. CRITICAL REQUIREMENT: You must explicitly start EVERY single message with 'Beta,' followed by a comma. Speak with deep elder values and occasional classic wise phrases."},{role: "user",content: messageText}]})});const data = await response.json();if (response.ok) {let reply = data.choices.message.content;if (!reply.trim().toLowerCase().startsWith('beta')) {reply = "Beta, " + reply;}botElements.messageDiv.textContent = reply;} else {botElements.messageDiv.textContent = Beta, there seems to be a structural issue: ${data.error ? data.error.message : 'API connection dropped'};}} catch (error) {botElements.messageDiv.textContent = 'Beta, the network link dropped out. Let us try that again.';console.error(error);} finally {// Release defensive UI block safelyuserInput.disabled = false;sendBtn.disabled = false;userInput.focus();chatContainer.scrollTop = chatContainer.scrollHeight;}}function appendUserMessage(text) {const wrapper = document.createElement('div');wrapper.className = 'message-wrapper user-wrapper';const messageDiv = document.createElement('div');messageDiv.className = 'message user-message';messageDiv.textContent = text;wrapper.appendChild(messageDiv);chatContainer.appendChild(wrapper);chatContainer.scrollTop = chatContainer.scrollHeight;}function appendBotPlaceholder() {const wrapper = document.createElement('div');wrapper.className = 'message-wrapper bot-wrapper';const avatar = document.createElement('div');avatar.className = 'msg-avatar';avatar.innerHTML = <img src="${imgUrl}" alt="Chipa Sahib">;const messageDiv = document.createElement('div');messageDiv.className = 'message bot-message';messageDiv.textContent = 'Reflecting on your words...';wrapper.appendChild(avatar);wrapper.appendChild(messageDiv);chatContainer.appendChild(wrapper);chatContainer.scrollTop = chatContainer.scrollHeight;return { messageDiv };}
