@@ -10,8 +10,8 @@
             --chat-bg: #14181f;
             --text-main: #f3f4f6;
             --text-muted: #9ca3af;
-            --accent-gold: #d4af37;
-            --accent-glow: rgba(212, 175, 55, 0.2);
+            --accent-green: #00b050;
+            --accent-glow: rgba(0, 176, 80, 0.25);
             --user-msg: #1f293d;
             --bot-msg: #1a202c;
             --border-color: #242b35;
@@ -49,13 +49,13 @@
             width: 58px;
             height: 58px;
             border-radius: 50%;
-            border: 2px solid var(--accent-gold);
+            border: 2px solid var(--accent-green);
             box-shadow: 0 0 15px var(--accent-glow);
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000;
+            background-color: #fff;
         }
 
         .avatar img {
@@ -160,7 +160,8 @@
             border-radius: 50%;
             overflow: hidden;
             flex-shrink: 0;
-            border: 1.5px solid var(--accent-gold);
+            border: 1.5px solid var(--accent-green);
+            background-color: #fff;
         }
 
         .msg-avatar img {
@@ -192,9 +193,9 @@
         }
 
         .action-chip:hover {
-            border-color: var(--accent-gold);
+            border-color: var(--accent-green);
             color: #ffffff;
-            background-color: rgba(212, 175, 55, 0.05);
+            background-color: rgba(0, 176, 80, 0.05);
         }
 
         /* Control Dock */
@@ -220,12 +221,12 @@
         }
 
         #user-input:focus {
-            border-color: var(--accent-gold);
+            border-color: var(--accent-green);
         }
 
         button {
-            background: linear-gradient(135deg, #d4af37 0%, #aa8416 100%);
-            color: #0d0f12;
+            background: linear-gradient(135deg, #00b050 0%, #00803a 100%);
+            color: #ffffff;
             border: none;
             padding: 0 28px;
             border-radius: 30px;
@@ -234,13 +235,13 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 176, 80, 0.3);
             transition: all 0.2s;
         }
 
         button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 176, 80, 0.4);
         }
 
         button:disabled {
@@ -269,7 +270,8 @@
     <header>
         <div class="profile-area">
             <div class="avatar">
-                <img src="https://chhipa.org" alt="Muhammad Ramzan Chhipa">
+                <!-- Direct CDN link of your provided profile photo image asset -->
+                <img src="https://githubusercontent.com" alt="Muhammad Ramzan Chhipa">
             </div>
             <div class="profile-info">
                 <h1>Chipa Sahib AI</h1>
@@ -284,7 +286,7 @@
     <div id="chat-container">
         <div class="message-wrapper bot-wrapper">
             <div class="msg-avatar">
-                <img src="https://chhipa.org" alt="Chipa Sahib">
+                <img src="https://githubusercontent.com" alt="Chipa Sahib">
             </div>
             <div class="message bot-message">Beta, As-salamu alaykum! I am Chipa Sahib. Tell me, what matters or difficulties are you facing today? I am here to guide you.</div>
         </div>
@@ -306,7 +308,7 @@
         const chatContainer = document.getElementById('chat-container');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
-        const imgUrl = "https://chhipa.org";
+        const imgUrl = "https://githubusercontent.com";
 
         const apiKey = "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";
 
@@ -316,14 +318,10 @@
             }
         });
 
+        // Fixed Button Callback Function Hook
         function clickAction(text) {
             userInput.value = text;
             sendMessage();
         }
 
         async function sendMessage() {
-            const messageText = userInput.value.trim();
-            if (!messageText) return;
-
-            appendUserMessage(messageText);
-            userInput.value = '';
